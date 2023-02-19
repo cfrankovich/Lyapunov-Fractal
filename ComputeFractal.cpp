@@ -129,40 +129,37 @@ int main()
     /* User Inputs */
     std::string sequencestr; // Sequence of As and Bs used to calculate
     std::cout << "Sequence of As and Bs. (Example: AB): ";
-    //std::cin >> sequencestr;
+    std::cin >> sequencestr;
 
     int iterations; // N 
     std::cout << "Number of iterations (N): ";
-    //std::cin >> iterations;
+    std::cin >> iterations;
 
     int resolution; // The number of rows and cols for calculation 
     std::cout << "Resolution (in pixels): ";
-    //std::cin >> resolution;
-
-    //std::vector<double> sequence = get_sequence(sequencestr, A, B);
-
-    //double lambda = calculate_lyapunov_exponent(iterations, x_0, sequence);
-    //std::cout << lambda << "\n";
+    std::cin >> resolution;
 
     /* Computing */
     int counter;
-    counter = 0;
-    std::vector<std::vector<int> > grid_scale_values; 
+    double A, B;
+    double lambda;
+    std::vector<color_t> grid_scale_values; 
+    std::vector<double> sequence; 
 
+    counter = 0;
     std::cout << "Computing Values [" << counter << "/" << pow(resolution, 2) << "]";
-    for (int i = 1; i <= resolution; i++)
+    for (int i = 0; i < resolution; i++)
     {
-        for (int k = 1; k <= resolution; k++)
+        A = (4/resolution) * i; 
+        for (int k = 0; k < resolution; k++)
         {
+            B = (4/resolution) * k; 
+            sequence = get_sequence(sequencestr, A, B);
+            lambda = calculate_lyapunov_exponent(iterations, x_0, sequence);
+            grid_scale_values.push_back(get_exponent_color(lambda));
             std::cout << "\rComputing Values [" << ++counter << "/" << pow(resolution, 2) << "]";
         }
     }
-
-    double lambda = 0;
-    std::cin >> lambda;
-    color_t mycolor = get_exponent_color(lambda);
-    std::cout << "0x" << std::hex << mycolor.red << mycolor.green << mycolor.blue << "\n"; 
-
 
     /* Graphics 
     bool running;
