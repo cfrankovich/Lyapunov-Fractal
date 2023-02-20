@@ -150,29 +150,29 @@ int main()
     std::cout << "Computing Values [" << counter << "/" << pow(resolution, 2) << "]";
     for (int i = 0; i < resolution; i++)
     {
-        A = (4/resolution) * i; 
-        for (int k = 0; k < resolution; k++)
+        B = (4.0/(resolution-1)) * i;
+        for (int j = 0; j < resolution; j++)
         {
-            B = (4/resolution) * k; 
+            A = (4.0/(resolution-1)) * j;
             sequence = get_sequence(sequencestr, A, B);
             lambda = calculate_lyapunov_exponent(iterations, x_0, sequence);
-            grid_scale_values.push_back(get_exponent_color(lambda));
+            color_t color = get_exponent_color(lambda);
+            grid_scale_values.push_back(color);
             std::cout << "\rComputing Values [" << ++counter << "/" << pow(resolution, 2) << "]";
         }
     }
 
-    /* Graphics 
+    /* Graphics */ 
     bool running;
-    running = true;
     SDL_Event event;
-
     SDL_Window* window;
     SDL_Renderer* renderer;
+
+    running = true;
     window = NULL;
     renderer = NULL;
-
     SDL_Init(SDL_INIT_VIDEO);
-    window = SDL_CreateWindow("Lyapunov's Fractal", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, 0);
+    window = SDL_CreateWindow("Lyapunov's Fractal", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, resolution, resolution, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     while (running)
@@ -190,11 +190,22 @@ int main()
         SDL_RenderClear(renderer);
 
         // draw here //
-        d
+        for (int x = 0; x < resolution; x++)
+        {
+            for (int y = 0; y < resolution; y++)
+            {
+                SDL_SetRenderDrawColor(renderer, grid_scale_values[x*y].red, grid_scale_values[x*y].green, grid_scale_values[x*y].blue, 0xFF);
+                SDL_RenderDrawPoint(renderer, x, resolution-y);
+            }
+        }
+
+
+        //SDL_SetRenderDrawColor(renderer, grid_scale_values[i].red, grid_scale_values[i].green, grid_scale_values[i].blue, 0xFF);
+        SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
+        SDL_RenderDrawPoint(renderer, 10, 10);
 
         SDL_RenderPresent(renderer);
     }
-    */    
 
     return 0;
 }
