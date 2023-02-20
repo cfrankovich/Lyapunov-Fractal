@@ -6,18 +6,21 @@ SDL_INCLUDE = -I/opt/homebrew/include/SDL2
 SDL_CFLAGS = $(shell pkg-config --cflags sdl2)
 override CFLAGS += $(SDL_CFLAGS)
 
-SRCS = ComputeFractal.cpp
+SRC_DIR = src
+OBJ_DIR = obj
+BIN_DIR = bin
+SRCS = $(wildcard $(SRC_DIR)/*.cpp) 
+OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS)) 
 EXEC = LyapunovFractalRenderer
 
-OBJS = $(SRCS:.cpp=.o)
 
-all: $(EXEC)
+all: $(BIN_DIR)/$(EXEC)
 
-$(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) $(SDL_LIB) -lSDL2 $(OBJS) -o $(EXEC)
+$(BIN_DIR)/$(EXEC): $(OBJS)
+	$(CC) $(CFLAGS) $(SDL_LIB) -lSDL2 $(OBJS) -o $(BIN_DIR)/$(EXEC)
 
-%.o: %.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(CFLAGS) $(SDL_INCLUDE) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -f $(OBJ_DIR)/*.o $(BIN_DIR)/$(EXEC)
