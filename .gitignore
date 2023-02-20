@@ -1,3 +1,4 @@
-LyapunovFractalRenderer
 *.o
 .vscode/
+bin/
+obj/
