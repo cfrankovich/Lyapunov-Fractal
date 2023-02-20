@@ -1,13 +1,23 @@
 CC = g++
-CFLAGS =
-LDFLAGS =
-NAME = lfg
+CFLAGS = -Wall -Wextra 
 
-all: create
-	@echo "Compile success."
+SDL_LIB = -L/opt/homebrew/lib
+SDL_INCLUDE = -I/opt/homebrew/include/SDL2
+SDL_CFLAGS = $(shell pkg-config --cflags sdl2)
+override CFLAGS += $(SDL_CFLAGS)
 
-create: ComputeFractal.o
-	$(CC) $(CFLAGS) ComputeFractal.o -o $(NAME) $(LDFLAGS)
+SRCS = ComputeFractal.cpp
+EXEC = LyapunovFractalRenderer
 
-ComputeFractal.o: ComputeFractal.cpp
-	$(CC) $(CFLAGS) -o $@ -c $^ $(LDFLAGS)
+OBJS = $(SRCS:.cpp=.o)
+
+all: $(EXEC)
+
+$(EXEC): $(OBJS)
+	$(CC) $(CFLAGS) $(SDL_LIB) -lSDL2 $(OBJS) -o $(EXEC)
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) $(SDL_INCLUDE) -c $< -o $@
+
+clean:
+	rm -f $(OBJS) $(EXEC)
