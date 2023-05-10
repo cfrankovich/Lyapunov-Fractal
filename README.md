@@ -1,9 +1,7 @@
-# ❗️ STILL A WORK IN PROGRESS ❗️
-
 # Lyapunov's Fractal Renderer
 For a full, detailed explanation visit [my website](https://frankovich.dev). 
 
-This program will calculate all the values used to render the Lyapunov Fractal](https://en.wikipedia.org/wiki/Lyapunov_fractal).
+This program will calculate all the values used to render the [Lyapunov Fractal](https://en.wikipedia.org/wiki/Lyapunov_fractal).
 
 Playing around with different values of A, B, N, and R will yield different results.
 
